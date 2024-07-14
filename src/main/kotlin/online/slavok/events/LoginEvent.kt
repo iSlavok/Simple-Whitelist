@@ -30,7 +30,7 @@ class LoginEvent {
                 val playerUUID = profile.id
                 val playerName = profile.name
                 if (SimpleWhitelist.configManager.config.whitelist && !SimpleWhitelist.databaseManager.checkPlayer(playerName)) {
-                    handler.disconnect(Text.literal("Вы не в вайтлисте!").formatted(Formatting.RED))
+                    handler.disconnect(Text.literal("You are not on the whitelist!").formatted(Formatting.RED))
                     return@QueryStart
                 }
                 val offlineUUID = UUID.nameUUIDFromBytes("OfflinePlayer:${profile.name}".toByteArray(StandardCharsets.UTF_8))

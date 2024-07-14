@@ -26,12 +26,12 @@ class SimpleWhitelistCommand {
                             val playerName = context.getArgument("nickname", String::class.java)
                             if (SimpleWhitelist.databaseManager.addPlayer(playerName)) {
                                 context.source.sendFeedback(
-                                    { Text.literal("$playerName добавлен в вайтлист").formatted(Formatting.GREEN) },
+                                    { Text.literal("$playerName added to whitelist").formatted(Formatting.GREEN) },
                                     true
                                 )
                             } else {
                                 context.source.sendFeedback(
-                                    { Text.literal("$playerName уже в вайтлисте").formatted(Formatting.DARK_RED) },
+                                    { Text.literal("$playerName is already on the whitelist").formatted(Formatting.DARK_RED) },
                                     true
                                 )
                             }
@@ -46,12 +46,12 @@ class SimpleWhitelistCommand {
                             val playerName = context.getArgument("nickname", String::class.java)
                             if (SimpleWhitelist.databaseManager.removePlayer(playerName)) {
                                 context.source.sendFeedback(
-                                    { Text.literal("$playerName удален из вайтлиста").formatted(Formatting.RED) },
+                                    { Text.literal("$playerName removed from the whitelist").formatted(Formatting.RED) },
                                     true
                                 )
                             } else {
                                 context.source.sendFeedback(
-                                    { Text.literal("$playerName не найден в вайтлисте").formatted(Formatting.DARK_RED) },
+                                    { Text.literal("$playerName not found on the whitelist").formatted(Formatting.DARK_RED) },
                                     true
                                 )
                             }
@@ -63,7 +63,7 @@ class SimpleWhitelistCommand {
                         .executes { context ->
                             val players = SimpleWhitelist.databaseManager.players
                             context.source.sendFeedback(
-                                { Text.literal("Игроки в вайтлисте: ${players.joinToString(", ")}").formatted(Formatting.GOLD) },
+                                { Text.literal("Players on the whitelist: ${players.joinToString(", ")}").formatted(Formatting.GOLD) },
                                 false
                             )
                             0
@@ -73,7 +73,7 @@ class SimpleWhitelistCommand {
                         .executes { context ->
                             SimpleWhitelist.configManager.setWhitelist(true)
                             context.source.sendFeedback(
-                                { Text.literal("Вайтлист включен").formatted(Formatting.GREEN) },
+                                { Text.literal("Whitelist is enabled").formatted(Formatting.GREEN) },
                                 true
                             )
                             0
@@ -83,7 +83,7 @@ class SimpleWhitelistCommand {
                         .executes { context ->
                             SimpleWhitelist.configManager.setWhitelist(false)
                             context.source.sendFeedback(
-                                { Text.literal("Вайтлист выключен").formatted(Formatting.RED) },
+                                { Text.literal("Whitelist is disabled").formatted(Formatting.RED) },
                                 true
                             )
                             0
