@@ -12,14 +12,10 @@ import online.slavok.events.LoginEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
-import java.nio.file.Path
 
 
 object SimpleWhitelist : ModInitializer {
 	val logger: Logger = LoggerFactory.getLogger("simple-whitelist")
-	val advancementsPath: Path = FabricLoader.getInstance().gameDir.resolve("world/advancements")
-	val playerDataPath: Path = FabricLoader.getInstance().gameDir.resolve("world/playerdata")
-	val statsPath: Path = FabricLoader.getInstance().gameDir.resolve("world/stats")
 	lateinit var databaseManager: DatabaseManager
 	lateinit var configManager: ConfigManager
 

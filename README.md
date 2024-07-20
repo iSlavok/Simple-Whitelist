@@ -6,7 +6,6 @@ This is a Fabric mod for Minecraft 1.21 that provides a simple whitelist system 
 
 - **Whitelist based on usernames:** The whitelist system is based on usernames, not UUIDs.
 - **Database storage:** You can choose between storing the whitelist data in a JSON file or a MySQL database.
-- **Automatic data transfer:** If a player's UUID changes (e.g., from a licence to a pirated account and vice versa), their data (advancements, playerdata, stats) will be automatically transferred to the new UUID.
 
 ## Dependencies
 
