@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import online.slavok.whitelist.SimpleWhitelist
-import online.slavok.mixin.ServerLoginNetworkHandlerAccessor
+import online.slavok.whitelist.mixin.ServerLoginNetworkHandlerAccessor
 class LoginEvent {
     fun register() {
         ServerLoginConnectionEvents.QUERY_START.register(

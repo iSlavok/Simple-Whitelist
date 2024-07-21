@@ -17,7 +17,7 @@
 	"entrypoints": {
 		"main": [
 			{
-				"value": "online.slavok.SimpleWhitelist",
+				"value": "online.slavok.whitelist.SimpleWhitelist",
 				"adapter": "kotlin"
 			}
 		]

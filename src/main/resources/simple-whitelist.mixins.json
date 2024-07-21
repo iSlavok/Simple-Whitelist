@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "online.slavok.mixin",
+  "package": "online.slavok.whitelist.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ServerLoginNetworkHandlerAccessor"

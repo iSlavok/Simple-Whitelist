@@ -1,4 +1,4 @@
-package online.slavok.mixin;
+package online.slavok.whitelist.mixin;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.server.network.ServerLoginNetworkHandler;
