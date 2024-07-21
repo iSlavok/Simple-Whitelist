@@ -1,4 +1,4 @@
-package online.slavok.commands.api
+package online.slavok.whitelist.commands.api
 
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.server.command.ServerCommandSource

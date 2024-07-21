@@ -1,8 +1,8 @@
-package online.slavok.config
+package online.slavok.whitelist.config
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import online.slavok.SimpleWhitelist
+import online.slavok.whitelist.SimpleWhitelist
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter

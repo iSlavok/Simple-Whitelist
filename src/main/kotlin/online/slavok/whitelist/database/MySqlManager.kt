@@ -1,4 +1,4 @@
-package online.slavok.database
+package online.slavok.whitelist.database
 
 import java.sql.Connection
 import java.sql.DriverManager

@@ -1,4 +1,4 @@
-package online.slavok.commands.api
+package online.slavok.whitelist.commands.api
 
 import me.lucko.fabric.api.permissions.v0.Permissions
 import net.minecraft.command.CommandSource

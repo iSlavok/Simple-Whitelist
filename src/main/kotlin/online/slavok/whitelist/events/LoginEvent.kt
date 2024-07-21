@@ -1,10 +1,10 @@
-package online.slavok.events
+package online.slavok.whitelist.events
 
 import com.mojang.authlib.GameProfile
 import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import online.slavok.SimpleWhitelist
+import online.slavok.whitelist.SimpleWhitelist
 import online.slavok.mixin.ServerLoginNetworkHandlerAccessor
 class LoginEvent {
     fun register() {

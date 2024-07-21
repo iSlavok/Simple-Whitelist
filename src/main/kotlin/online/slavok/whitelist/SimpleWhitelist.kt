@@ -1,14 +1,14 @@
-package online.slavok
+package online.slavok.whitelist
 
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.fabricmc.loader.api.FabricLoader
-import online.slavok.commands.SimpleWhitelistCommand
-import online.slavok.config.ConfigManager
-import online.slavok.database.DatabaseManager
-import online.slavok.database.JsonManager
-import online.slavok.database.MySqlManager
-import online.slavok.events.LoginEvent
+import online.slavok.whitelist.commands.SimpleWhitelistCommand
+import online.slavok.whitelist.config.ConfigManager
+import online.slavok.whitelist.database.DatabaseManager
+import online.slavok.whitelist.database.JsonManager
+import online.slavok.whitelist.database.MySqlManager
+import online.slavok.whitelist.events.LoginEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.file.Files

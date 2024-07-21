@@ -1,4 +1,4 @@
-package online.slavok.commands
+package online.slavok.whitelist.commands
 
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType
@@ -7,10 +7,10 @@ import net.minecraft.server.command.CommandManager.literal
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import online.slavok.SimpleWhitelist
-import online.slavok.commands.api.Permission
-import online.slavok.commands.suggestionProviders.PlayerSuggestionProvider
-import online.slavok.commands.suggestionProviders.WhitelistPlayerSuggestionProvider
+import online.slavok.whitelist.SimpleWhitelist
+import online.slavok.whitelist.commands.api.Permission
+import online.slavok.whitelist.commands.suggestionProviders.PlayerSuggestionProvider
+import online.slavok.whitelist.commands.suggestionProviders.WhitelistPlayerSuggestionProvider
 
 
 class SimpleWhitelistCommand {

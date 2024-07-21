@@ -1,4 +1,4 @@
-package online.slavok.database
+package online.slavok.whitelist.database
 
 abstract class DatabaseManager {
     abstract var players: MutableList<String>

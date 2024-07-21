@@ -1,4 +1,4 @@
-package online.slavok.config
+package online.slavok.whitelist.config
 
 import kotlinx.serialization.Serializable
 

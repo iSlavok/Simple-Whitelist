@@ -1,4 +1,4 @@
-package online.slavok.database
+package online.slavok.whitelist.database
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
