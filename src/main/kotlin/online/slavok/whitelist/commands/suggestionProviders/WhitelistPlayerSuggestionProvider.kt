@@ -15,7 +15,7 @@ class WhitelistPlayerSuggestionProvider : SuggestionProvider<ServerCommandSource
         context: CommandContext<ServerCommandSource>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        val playerNames = SimpleWhitelist.databaseManager.players
+        val playerNames = SimpleWhitelist.databaseManager.getAll()
         for (playerName in playerNames) {
             builder.suggest(playerName)
         }

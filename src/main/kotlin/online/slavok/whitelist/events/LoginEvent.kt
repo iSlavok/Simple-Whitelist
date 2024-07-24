@@ -13,7 +13,7 @@ class LoginEvent {
                 val accessor = handler as ServerLoginNetworkHandlerAccessor
                 val profile: GameProfile = accessor.getProfile()
                 val playerName = profile.name
-                if (SimpleWhitelist.configManager.config.whitelist && !SimpleWhitelist.databaseManager.checkPlayer(playerName)) {
+                if (SimpleWhitelist.configManager.config.whitelist && !SimpleWhitelist.databaseManager.inWhitelist(playerName)) {
                     handler.disconnect(Text.literal("You are not on the whitelist!").formatted(Formatting.RED))
                 }
             }

@@ -61,7 +61,7 @@ class SimpleWhitelistCommand {
                 ).then(
                     literal("list")
                         .executes { context ->
-                            val players = SimpleWhitelist.databaseManager.players
+                            val players = SimpleWhitelist.databaseManager.getAll()
                             context.source.sendFeedback(
                                 { Text.literal("Players on the whitelist: ${players.joinToString(", ")}").formatted(Formatting.GOLD) },
                                 false

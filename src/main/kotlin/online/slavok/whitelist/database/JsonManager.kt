@@ -10,7 +10,7 @@ import java.io.FileWriter
 class JsonManager(
     private val file: File
 ) : DatabaseManager() {
-    override var players: MutableList<String>
+    private var players: MutableList<String>
 
     init {
         if (file.exists()) {
@@ -26,6 +26,10 @@ class JsonManager(
         players = mutableListOf()
     }
 
+    override fun getAll(): List<String> {
+        return players
+    }
+
     private fun savePlayers() {
         val writer = FileWriter(file)
         val json = Json.encodeToString(players)
@@ -35,7 +39,7 @@ class JsonManager(
     }
 
     override fun addPlayer(nickname: String): Boolean {
-        if (checkPlayer(nickname)) {
+        if (inWhitelist(nickname)) {
             return false
         }
         players.add(nickname)
@@ -44,11 +48,15 @@ class JsonManager(
     }
 
     override fun removePlayer(nickname: String): Boolean {
-        if (!checkPlayer(nickname)) {
+        if (!inWhitelist(nickname)) {
             return false
         }
         players.remove(nickname)
         savePlayers()
         return true
+    }
+
+    override fun inWhitelist(nickname: String): Boolean {
+        return players.contains(nickname)
     }
 }

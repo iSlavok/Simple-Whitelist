@@ -1,54 +1,82 @@
 package online.slavok.whitelist.database
 
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import java.sql.Connection
 import java.sql.DriverManager
 
 class MySqlManager(
     private val url: String,
 ) : DatabaseManager() {
-    override var players: MutableList<String> = mutableListOf()
+    private val dataSource = createHikariDataSource()
 
+    private fun createHikariDataSource(): HikariDataSource {
+        val config = HikariConfig()
+        config.jdbcUrl = url
+        config.maximumPoolSize = 10
+        config.idleTimeout = 300000
+        config.connectionTimeout = 5000
+        return HikariDataSource(config)
+    }
     init {
-        val createTableQuery = """
-            CREATE TABLE IF NOT EXISTS whitelist (
-                nickname TEXT unique
-            )
-        """
-        val connection = getConnection()
-        connection.createStatement().execute(createTableQuery)
-        val preparedStatement = connection.createStatement()
-        val resultSet = preparedStatement.executeQuery("SELECT nickname FROM whitelist")
-        while (resultSet.next()) {
-            players.add(resultSet.getString("nickname"))
+        getConnection().use { connection ->
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS whitelist (nickname TEXT PRIMARY KEY);").use { ps ->
+                ps.execute()
+            }
         }
-        connection.close()
     }
 
     private fun getConnection(): Connection {
-        return DriverManager.getConnection(url)
+        return dataSource.connection
+    }
+
+    override fun getAll(): List<String> {
+        val list: MutableList<String> = ArrayList()
+        getConnection().use { connection ->
+            connection.prepareStatement ("SELECT * FROM whitelist;").use { ps ->
+                val rs = ps.executeQuery()
+                while (rs.next()) {
+                    list.add(rs.getString("nickname"))
+                }
+            }
+        }
+        return list
     }
 
     override fun addPlayer(nickname: String): Boolean {
-        if (checkPlayer(nickname)) {
+        if (inWhitelist(nickname)) {
             return false
         }
-        val insertQuery = "INSERT INTO whitelist(nickname) VALUES (?)"
-        val preparedStatement = getConnection().prepareStatement(insertQuery)
-        preparedStatement.setString(1, nickname)
-        preparedStatement.executeUpdate()
-        players.add(nickname)
+        getConnection().use { connection ->
+            connection.prepareStatement("INSERT INTO whitelist (nickname) VALUES (?);").use { ps ->
+                ps.setString(1, nickname)
+                ps.execute()
+            }
+        }
         return true
     }
 
     override fun removePlayer(nickname: String): Boolean {
-        if (!checkPlayer(nickname)) {
+        if (!inWhitelist(nickname)) {
             return false
         }
-        val deleteQuery = "DELETE FROM whitelist WHERE nickname = ?"
-        val preparedStatement = getConnection().prepareStatement(deleteQuery)
-        preparedStatement.setString(1, nickname)
-        preparedStatement.executeUpdate()
-        players.remove(nickname)
+        getConnection().use { connection ->
+            connection.prepareStatement("DELETE FROM whitelist WHERE nickname = ?;").use { ps ->
+                ps.setString(1, nickname)
+                ps.execute()
+            }
+        }
         return true
+    }
+
+    override fun inWhitelist(nickname: String): Boolean {
+        getConnection().use { connection ->
+            connection.prepareStatement("SELECT * FROM whitelist WHERE nickname = ?;").use { ps ->
+                ps.setString(1, nickname)
+                ps.executeQuery().use { rs ->
+                    return rs.next()
+                }
+            }
+        }
     }
 }
