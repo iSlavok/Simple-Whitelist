@@ -14,7 +14,6 @@ class MySqlManager(
         val config = HikariConfig()
         config.jdbcUrl = url
         config.maximumPoolSize = 10
-        config.idleTimeout = 300000
         config.connectionTimeout = 5000
         return HikariDataSource(config)
     }
