@@ -22,8 +22,9 @@ class JsonManager(
             } catch (e: Exception) {
                 mutableListOf()
             }
+        } else {
+            players = mutableListOf()
         }
-        players = mutableListOf()
     }
 
     override fun getAll(): List<String> {
