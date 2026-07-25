@@ -5,8 +5,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("dev.kikugie.stonecutter")
     id("fabric-loom") version "1.17.17"
-    kotlin("jvm") version "2.0.0"
-    kotlin("plugin.serialization") version "2.0.0"
+    // 2.4.10 (not 2.0) so the compiler runs on JDK 25 too — the release job builds
+    // every node (yarn + 26.x) on JDK 25, and Kotlin 2.0 can't parse the "25.x"
+    // version string. Matches the unobfuscated node's Kotlin.
+    kotlin("jvm") version "2.4.10"
+    kotlin("plugin.serialization") version "2.4.10"
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
 }
 
