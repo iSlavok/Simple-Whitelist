@@ -16,6 +16,7 @@ base {
 }
 
 repositories {
+	mavenCentral()
 }
 
 dependencies {
@@ -30,6 +31,13 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${project.kotlinx_serialization_version}")
 	include("com.mysql:mysql-connector-j:${project.mysql_connector_version}")
 	include(implementation("com.zaxxer:HikariCP:5.1.0"))
+
+	testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+test {
+	useJUnitPlatform()
 }
 
 processResources {
