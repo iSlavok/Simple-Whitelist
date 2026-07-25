@@ -30,10 +30,9 @@
 		"minecraft": "~1.21",
 		"java": ">=21",
 		"fabric-api": "*",
-		"fabric-language-kotlin": "*",
-		"luckperms": "*"
+		"fabric-language-kotlin": "*"
 	},
 	"suggests": {
-		"another-mod": "*"
+		"fabric-permissions-api-v0": "*"
 	}
 }

@@ -3,7 +3,6 @@ package online.slavok.whitelist.database
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import java.sql.Connection
-import java.sql.DriverManager
 
 class MySqlManager(
     private val url: String,
@@ -17,33 +16,36 @@ class MySqlManager(
         config.connectionTimeout = 5000
         return HikariDataSource(config)
     }
+
     init {
         getConnection().use { connection ->
-            connection.prepareStatement("CREATE TABLE IF NOT EXISTS whitelist (nickname TEXT PRIMARY KEY);").use { ps ->
+            // VARCHAR(16) = max Minecraft username length; TEXT can't be a key without a prefix length.
+            connection.prepareStatement(
+                "CREATE TABLE IF NOT EXISTS whitelist (nickname VARCHAR(16) PRIMARY KEY);"
+            ).use { ps ->
                 ps.execute()
             }
         }
     }
 
-    private fun getConnection(): Connection {
-        return dataSource.connection
-    }
+    private fun getConnection(): Connection = dataSource.connection
 
     override fun getAll(): List<String> {
         val list: MutableList<String> = ArrayList()
         getConnection().use { connection ->
-            connection.prepareStatement ("SELECT * FROM whitelist;").use { ps ->
-                val rs = ps.executeQuery()
-                while (rs.next()) {
-                    list.add(rs.getString("nickname"))
+            connection.prepareStatement("SELECT nickname FROM whitelist;").use { ps ->
+                ps.executeQuery().use { rs ->
+                    while (rs.next()) {
+                        list.add(rs.getString("nickname"))
+                    }
                 }
             }
         }
         return list
     }
 
-    override fun addPlayer(nickname: String): Boolean {
-        if (inWhitelist(nickname)) {
+    override fun add(nickname: String): Boolean {
+        if (contains(nickname)) {
             return false
         }
         getConnection().use { connection ->
@@ -55,22 +57,18 @@ class MySqlManager(
         return true
     }
 
-    override fun removePlayer(nickname: String): Boolean {
-        if (!inWhitelist(nickname)) {
-            return false
-        }
+    override fun remove(nickname: String): Boolean {
         getConnection().use { connection ->
             connection.prepareStatement("DELETE FROM whitelist WHERE nickname = ?;").use { ps ->
                 ps.setString(1, nickname)
-                ps.execute()
+                return ps.executeUpdate() > 0
             }
         }
-        return true
     }
 
-    override fun inWhitelist(nickname: String): Boolean {
+    override fun contains(nickname: String): Boolean {
         getConnection().use { connection ->
-            connection.prepareStatement("SELECT * FROM whitelist WHERE nickname = ?;").use { ps ->
+            connection.prepareStatement("SELECT 1 FROM whitelist WHERE nickname = ?;").use { ps ->
                 ps.setString(1, nickname)
                 ps.executeQuery().use { rs ->
                     return rs.next()

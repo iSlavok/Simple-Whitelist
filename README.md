@@ -4,16 +4,19 @@ This is a Fabric mod for Minecraft 1.21 that provides a simple whitelist system 
 
 ## Features
 
-- **Whitelist based on usernames:** The whitelist system is based on usernames, not UUIDs.
+- **Whitelist based on usernames:** The whitelist system is based on usernames, not UUIDs. Names are matched case-insensitively.
 - **Database storage:** You can choose between storing the whitelist data in a JSON file or a MySQL database.
 
 ## Dependencies
 
-This mod requires the following dependencies:
+Required:
 
 - **[Fabric API](https://modrinth.com/mod/fabric-api)**
 - **[Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)**
-- **[LuckPerms](https://modrinth.com/mod/luckperms)**
+
+Optional:
+
+- **A [fabric-permissions-api](https://github.com/lucko/fabric-permissions-api) provider** (e.g. **[LuckPerms](https://modrinth.com/mod/luckperms)**) for permission-based command access. Without it, commands fall back to vanilla operator level 4.
 
 ## Configuration
 
