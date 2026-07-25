@@ -12,6 +12,16 @@ import online.slavok.whitelist.commands.api.Permission
 import online.slavok.whitelist.commands.suggestionProviders.PlayerSuggestionProvider
 import online.slavok.whitelist.commands.suggestionProviders.WhitelistPlayerSuggestionProvider
 
+// ServerCommandSource.sendFeedback changed signature in 1.20: pre-1.20 takes a
+// Text directly, 1.20+ takes a Supplier<Text>. Branch once here instead of at
+// every call site.
+private fun ServerCommandSource.feedback(text: Text, broadcastToOps: Boolean) {
+    //? if >=1.20 {
+    sendFeedback({ text }, broadcastToOps)
+    //?} else {
+    /*sendFeedback(text, broadcastToOps)*/
+    //?}
+}
 
 class SimpleWhitelistCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource?>) {
@@ -25,14 +35,14 @@ class SimpleWhitelistCommand {
                         .executes { context ->
                             val playerName = context.getArgument("nickname", String::class.java)
                             if (SimpleWhitelist.databaseManager.addPlayer(playerName)) {
-                                context.source.sendFeedback(
-                                    { Text.literal("$playerName added to whitelist").formatted(Formatting.GREEN) },
+                                context.source.feedback(
+                                    Text.literal("$playerName added to whitelist").formatted(Formatting.GREEN),
                                     true
                                 )
                                 1
                             } else {
-                                context.source.sendFeedback(
-                                    { Text.literal("$playerName is already on the whitelist").formatted(Formatting.DARK_RED) },
+                                context.source.feedback(
+                                    Text.literal("$playerName is already on the whitelist").formatted(Formatting.DARK_RED),
                                     true
                                 )
                                 0
@@ -46,14 +56,14 @@ class SimpleWhitelistCommand {
                         .executes { context ->
                             val playerName = context.getArgument("nickname", String::class.java)
                             if (SimpleWhitelist.databaseManager.removePlayer(playerName)) {
-                                context.source.sendFeedback(
-                                    { Text.literal("$playerName removed from the whitelist").formatted(Formatting.RED) },
+                                context.source.feedback(
+                                    Text.literal("$playerName removed from the whitelist").formatted(Formatting.RED),
                                     true
                                 )
                                 1
                             } else {
-                                context.source.sendFeedback(
-                                    { Text.literal("$playerName not found on the whitelist").formatted(Formatting.DARK_RED) },
+                                context.source.feedback(
+                                    Text.literal("$playerName not found on the whitelist").formatted(Formatting.DARK_RED),
                                     true
                                 )
                                 0
@@ -64,8 +74,8 @@ class SimpleWhitelistCommand {
                     literal("list")
                         .executes { context ->
                             val players = SimpleWhitelist.databaseManager.getAll()
-                            context.source.sendFeedback(
-                                { Text.literal("Players on the whitelist: ${players.joinToString(", ")}").formatted(Formatting.GOLD) },
+                            context.source.feedback(
+                                Text.literal("Players on the whitelist: ${players.joinToString(", ")}").formatted(Formatting.GOLD),
                                 false
                             )
                             1
@@ -74,8 +84,8 @@ class SimpleWhitelistCommand {
                     literal("on")
                         .executes { context ->
                             SimpleWhitelist.configManager.setWhitelist(true)
-                            context.source.sendFeedback(
-                                { Text.literal("Whitelist is enabled").formatted(Formatting.GREEN) },
+                            context.source.feedback(
+                                Text.literal("Whitelist is enabled").formatted(Formatting.GREEN),
                                 true
                             )
                             1
@@ -84,8 +94,8 @@ class SimpleWhitelistCommand {
                     literal("off")
                         .executes { context ->
                             SimpleWhitelist.configManager.setWhitelist(false)
-                            context.source.sendFeedback(
-                                { Text.literal("Whitelist is disabled").formatted(Formatting.RED) },
+                            context.source.feedback(
+                                Text.literal("Whitelist is disabled").formatted(Formatting.RED),
                                 true
                             )
                             1
