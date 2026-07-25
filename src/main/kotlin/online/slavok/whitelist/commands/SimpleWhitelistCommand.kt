@@ -114,8 +114,14 @@ class SimpleWhitelistCommand {
                         }
                 )
         )
-        dispatcher.register(literal("swh").redirect(command))
-        dispatcher.register(literal("swl").redirect(command))
-        dispatcher.register(literal("swhitelist").redirect(command))
+        dispatcher.register(
+            literal("swh").requires(Permission.require("simplewhitelist.command", 4)).redirect(command)
+        )
+        dispatcher.register(
+            literal("swl").requires(Permission.require("simplewhitelist.command", 4)).redirect(command)
+        )
+        dispatcher.register(
+            literal("swhitelist").requires(Permission.require("simplewhitelist.command", 4)).redirect(command)
+        )
     }
 }
