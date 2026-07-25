@@ -25,47 +25,53 @@ class JsonManagerTest {
     }
 
     @Test
-    fun `lookup is case-insensitive`() {
+    fun `lookup is case-sensitive`() {
         val db = manager()
         db.addPlayer("Steve")
-        assertTrue(db.inWhitelist("steve"))
-        assertTrue(db.inWhitelist("STEVE"))
-        // negative control: a different name in any case is still absent
-        assertFalse(db.inWhitelist("steves"))
+        // positive control: exact case is found
+        assertTrue(db.inWhitelist("Steve"))
+        // a different case is a different player and is not on the list
+        assertFalse(db.inWhitelist("steve"))
+        assertFalse(db.inWhitelist("STEVE"))
     }
 
     @Test
-    fun `add is idempotent regardless of case`() {
+    fun `different case is a distinct player`() {
         val db = manager()
         assertTrue(db.addPlayer("Steve"))
-        // adding the same name in different case is a no-op, reported as false
-        assertFalse(db.addPlayer("steve"))
-        assertEquals(1, db.getAll().size)
+        // adding a different case is a new, separate entry (not a no-op)
+        assertTrue(db.addPlayer("steve"))
+        assertEquals(2, db.getAll().size)
+        assertTrue(db.inWhitelist("Steve"))
+        assertTrue(db.inWhitelist("steve"))
     }
 
     @Test
-    fun `remove only succeeds for present names`() {
+    fun `remove only matches the exact case`() {
         val db = manager()
         db.addPlayer("Steve")
-        assertTrue(db.removePlayer("STEVE"))
+        // negative control: removing a different case removes nothing
+        assertFalse(db.removePlayer("STEVE"))
+        assertTrue(db.inWhitelist("Steve"))
+        // the exact case removes it
+        assertTrue(db.removePlayer("Steve"))
         assertFalse(db.inWhitelist("Steve"))
-        // negative control: removing an absent name reports false
-        assertFalse(db.removePlayer("Steve"))
     }
 
     @Test
     fun `data persists across reloads`() {
         val file = File(dir.toFile(), "persist.json")
         JsonManager(file).addPlayer("Steve")
-        // a fresh instance backed by the same file must see the stored name
-        assertTrue(JsonManager(file).inWhitelist("steve"))
+        // a fresh instance backed by the same file must see the stored name (exact case)
+        assertTrue(JsonManager(file).inWhitelist("Steve"))
+        assertFalse(JsonManager(file).inWhitelist("steve"))
     }
 
     @Test
-    fun `names are stored normalized`() {
+    fun `names are trimmed but keep their case`() {
         val db = manager()
         db.addPlayer("  SteVe  ")
-        assertEquals(listOf("steve"), db.getAll())
+        assertEquals(listOf("SteVe"), db.getAll())
     }
 
     @Test
