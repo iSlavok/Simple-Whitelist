@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "simple-whitelist-test",
+  "version": "1.0.0",
+  "name": "Simple Whitelist Test",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": [
+      "online.slavok.whitelist.gametest.WhitelistGameTest"
+    ]
+  },
+  "depends": {
+    "simple-whitelist": "*",
+    "fabric-gametest-api-v1": "*"
+  }
+}

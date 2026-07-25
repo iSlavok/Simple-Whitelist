@@ -2,9 +2,14 @@ package online.slavok.whitelist.events
 
 import com.mojang.authlib.GameProfile
 import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents
-import net.minecraft.text.Text
+//? if >=1.22 {
+/*import net.minecraft.ChatFormatting as Formatting*/
+//?} else {
 import net.minecraft.util.Formatting
+//?}
 import online.slavok.whitelist.SimpleWhitelist
+import online.slavok.whitelist.colored
+import online.slavok.whitelist.literalText
 import online.slavok.whitelist.mixin.ServerLoginNetworkHandlerAccessor
 class LoginEvent {
     fun register() {
@@ -14,7 +19,7 @@ class LoginEvent {
                 val profile: GameProfile = accessor.getProfile()
                 val playerName = profile.name
                 if (SimpleWhitelist.configManager.config.whitelist && !SimpleWhitelist.databaseManager.inWhitelist(playerName)) {
-                    handler.disconnect(Text.literal("You are not on the whitelist!").formatted(Formatting.RED))
+                    handler.disconnect(literalText("You are not on the whitelist!").colored(Formatting.RED))
                 }
             }
         )
