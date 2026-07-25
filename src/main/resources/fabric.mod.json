@@ -20,7 +20,7 @@
 				"value": "online.slavok.whitelist.SimpleWhitelist",
 				"adapter": "kotlin"
 			}
-		]
+		]${modmenu_entrypoint}
 	},
 	"mixins": [
 		"simple-whitelist.mixins.json"
@@ -33,6 +33,7 @@
 		"fabric-language-kotlin": "*"
 	},
 	"suggests": {
-		"fabric-permissions-api-v0": "*"
+		"fabric-permissions-api-v0": "*",
+		"modmenu": "*"
 	}
 }

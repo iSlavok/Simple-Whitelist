@@ -23,6 +23,9 @@ data class Mc(
     // anchor's own fabric-api is at least that new. Older anchors rely on the unit
     // tests (which run on every version) instead.
     val gametest: Boolean = false,
+    // Optional ModMenu integration (client config screen). Set to the ModMenu
+    // version on anchors where the screen source compiles; null elsewhere.
+    val modmenu: String? = null,
 )
 
 val mcVersion = stonecutter.current.version
@@ -76,6 +79,7 @@ val mc = when (mcVersion) {
             "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10",
         ),
         gametest = true,
+        modmenu = "16.0.1",
     )
     else -> error("Unconfigured Minecraft version: $mcVersion")
 }
@@ -86,6 +90,7 @@ base { archivesName.set(property("archives_base_name") as String) }
 
 repositories {
     mavenCentral()
+    maven("https://maven.terraformersmc.com/releases/") // ModMenu
 }
 
 dependencies {
@@ -94,6 +99,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
 
     modImplementation("net.fabricmc.fabric-api:fabric-api:${mc.fapi}")
+    mc.modmenu?.let { modImplementation("com.terraformersmc:modmenu:$it") }
     modImplementation("net.fabricmc:fabric-language-kotlin:${mc.flk}")
     modImplementation("me.lucko:fabric-permissions-api:${mc.permissions}")
 
@@ -127,10 +133,17 @@ if (mc.gametest) {
 }
 
 tasks.processResources {
+    // Inject the ModMenu entrypoint only where the integration is compiled in.
+    val modmenuEntrypoint = if (mc.modmenu != null) {
+        ",\n\t\t\"modmenu\": [\"online.slavok.whitelist.modmenu.WhitelistModMenu\"]"
+    } else {
+        ""
+    }
     val props = mapOf(
         "version" to project.version,
         "java_level" to mc.java,
         "minecraft_dep" to mc.depends,
+        "modmenu_entrypoint" to modmenuEntrypoint,
     )
     inputs.properties(props)
     filesMatching(listOf("fabric.mod.json", "*.mixins.json")) { expand(props) }

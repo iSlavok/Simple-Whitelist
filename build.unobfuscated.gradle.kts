@@ -73,6 +73,7 @@ tasks.processResources {
         "version" to project.version,
         "java_level" to u.runtimeJava,
         "minecraft_dep" to u.depends,
+        "modmenu_entrypoint" to "", // no ModMenu integration on 26+ yet
     )
     inputs.properties(props)
     filesMatching(listOf("fabric.mod.json", "*.mixins.json")) { expand(props) }
