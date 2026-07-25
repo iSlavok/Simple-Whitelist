@@ -7,8 +7,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("dev.kikugie.stonecutter")
     id("net.fabricmc.fabric-loom") version "1.17.17" // non-remapping variant
-    kotlin("jvm") version "2.0.0"
-    kotlin("plugin.serialization") version "2.0.0"
+    // Kotlin 2.0 can't run on JDK 25 (it fails to parse the "25.x" version string),
+    // and building 26+ requires JDK 25. This node is non-remapping, so a newer
+    // Kotlin here has no metadata-remap impact on the yarn nodes.
+    kotlin("jvm") version "2.4.10"
+    kotlin("plugin.serialization") version "2.4.10"
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
 }
 

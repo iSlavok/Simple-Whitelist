@@ -36,7 +36,7 @@ private fun ServerCommandSource.feedback(text: Text, broadcastToOps: Boolean) {
 }
 
 class SimpleWhitelistCommand {
-    fun register(dispatcher: CommandDispatcher<ServerCommandSource?>) {
+    fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         val command = dispatcher.register(
             literal("simplewhitelist")
                 .requires(Permission.require("simplewhitelist.command", 4))
