@@ -22,6 +22,24 @@ data class Mc(
 
 val mcVersion = stonecutter.current.version
 val mc = when (mcVersion) {
+    "1.20.1" -> Mc(
+        yarn = "1.20.1+build.10",
+        flk = "1.12.3+kotlin.2.0.21",
+        fapi = "0.92.11+1.20.1",
+        permissions = "0.3.1",
+        java = 17,
+        depends = ">=1.20 <1.20.5",
+        gameVersions = listOf("1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4"),
+    )
+    "1.20.6" -> Mc(
+        yarn = "1.20.6+build.3",
+        flk = "1.12.3+kotlin.2.0.21",
+        fapi = "0.100.8+1.20.6",
+        permissions = "0.3.1",
+        java = 21,
+        depends = ">=1.20.5 <1.21",
+        gameVersions = listOf("1.20.5", "1.20.6"),
+    )
     "1.21.10" -> Mc(
         yarn = "1.21.10+build.2",
         flk = "1.11.0+kotlin.2.0.0",

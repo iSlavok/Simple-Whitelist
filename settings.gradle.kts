@@ -15,9 +15,9 @@ stonecutter {
     kotlinController = true
     centralScript = "build.gradle.kts"
     create(rootProject) {
-        // One anchor for now. Whole 1.21.x line is covered by this jar via the
-        // version range in fabric.mod.json. More anchors are added in later PRs.
-        versions("1.21.10")
+        // Each anchor's jar covers a whole patch band via the version range in
+        // fabric.mod.json. More anchors are added in later PRs.
+        versions("1.20.1", "1.20.6", "1.21.10")
         vcsVersion = "1.21.10"
     }
 }
