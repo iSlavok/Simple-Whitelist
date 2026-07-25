@@ -38,8 +38,8 @@ val mc = when (mcVersion) {
         fapi = "0.77.0+1.18.2",
         permissions = "0.3.1",
         java = 17,
-        depends = ">=1.18.2 <1.19",
-        gameVersions = listOf("1.18.2"),
+        depends = ">=1.18 <1.19",
+        gameVersions = listOf("1.18", "1.18.1", "1.18.2"),
     )
     "1.19.4" -> Mc(
         yarn = "1.19.4+build.2",
@@ -78,7 +78,7 @@ val mc = when (mcVersion) {
         depends = ">=1.21 <1.22",
         gameVersions = listOf(
             "1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4",
-            "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10",
+            "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11",
         ),
         gametest = true,
         modmenu = "16.0.1",
