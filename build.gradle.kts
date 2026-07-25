@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.bundling.AbstractArchiveTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -6,6 +7,7 @@ plugins {
     id("fabric-loom") version "1.17.17"
     kotlin("jvm") version "2.0.0"
     kotlin("plugin.serialization") version "2.0.0"
+    id("me.modmuss50.mod-publish-plugin") version "0.8.4"
 }
 
 // Per-version matrix. Everything that differs between Minecraft versions lives here;
@@ -164,4 +166,22 @@ java {
 
 tasks.jar {
     from("LICENSE") { rename { "${it}_${base.archivesName.get()}" } }
+}
+
+// Publish this version node to Modrinth (run for all nodes via `./gradlew publishMods`).
+publishMods {
+    file.set(tasks.named<AbstractArchiveTask>("remapJar").flatMap { it.archiveFile })
+    version.set(project.version.toString())
+    type.set(me.modmuss50.mpp.ReleaseType.STABLE)
+    modLoaders.add("fabric")
+    changelog.set("See https://github.com/iSlavok/Simple-Whitelist/releases")
+    modrinth {
+        projectId.set(providers.gradleProperty("modrinth_id"))
+        accessToken.set(providers.environmentVariable("MODRINTH_TOKEN"))
+        // Must be the exact, complete patch list — Modrinth shows only what is listed.
+        minecraftVersions.addAll(mc.gameVersions)
+        requires("fabric-api")
+        requires("fabric-language-kotlin")
+        if (mc.modmenu != null) optional("modmenu")
+    }
 }

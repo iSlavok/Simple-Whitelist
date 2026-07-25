@@ -1,0 +1,40 @@
+name: release
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Highest JDK needed so the 26+ nodes are included in the build.
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 25
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v4
+      - name: assemble all versions (jars, no gametest boot)
+        run: ./gradlew assemble --stacktrace
+
+      # softprops has no exclude patterns → stage only the loadable jars.
+      - name: Collect release jars
+        run: |
+          mkdir -p release-jars
+          find versions -path '*/build/libs/*.jar' ! -name '*-sources.jar' -exec cp {} release-jars/ \;
+          ls -la release-jars
+      - name: Attach jars to the GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-jars/*.jar
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+
+      - name: Publish to Modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        run: ./gradlew publishMods --stacktrace
