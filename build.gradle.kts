@@ -18,6 +18,11 @@ data class Mc(
     val java: Int,
     val depends: String,      // "minecraft" range for fabric.mod.json
     val gameVersions: List<String>, // published game versions (used by the release pipeline)
+    // In-game gametests need fabric-gametest-api-v1; loom pulls a fixed gametest
+    // fabric-api (0.97.0+1.20.4) that only wins the version conflict when this
+    // anchor's own fabric-api is at least that new. Older anchors rely on the unit
+    // tests (which run on every version) instead.
+    val gametest: Boolean = false,
 )
 
 val mcVersion = stonecutter.current.version
@@ -57,6 +62,7 @@ val mc = when (mcVersion) {
         java = 21,
         depends = ">=1.20.5 <1.21",
         gameVersions = listOf("1.20.5", "1.20.6"),
+        gametest = true,
     )
     "1.21.10" -> Mc(
         yarn = "1.21.10+build.2",
@@ -69,6 +75,7 @@ val mc = when (mcVersion) {
             "1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4",
             "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10",
         ),
+        gametest = true,
     )
     else -> error("Unconfigured Minecraft version: $mcVersion")
 }
@@ -101,6 +108,22 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+// Headless in-game gametests (booted server) — see src/gametest. Enabled only on
+// anchors whose fabric-api ships a compatible fabric-gametest-api-v1 (see the
+// gametest flag in the matrix); other versions are covered by the unit tests.
+if (mc.gametest) {
+    fabricApi {
+        configureTests {
+            createSourceSet = true
+            modId = "${property("archives_base_name")}-test"
+            eula = true
+        }
+    }
+    dependencies {
+        "modGametestImplementation"("net.fabricmc.fabric-api:fabric-api:${mc.fapi}")
+    }
 }
 
 tasks.processResources {
