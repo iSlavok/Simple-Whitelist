@@ -20,8 +20,11 @@ class MySqlManager(
     init {
         getConnection().use { connection ->
             // VARCHAR(16) = max Minecraft username length; TEXT can't be a key without a prefix length.
+            // utf8mb4_bin is a binary collation, so lookups and the primary key are case-sensitive
+            // ("Steve" and "steve" are distinct rows). MySQL's default collation is case-insensitive.
             connection.prepareStatement(
-                "CREATE TABLE IF NOT EXISTS whitelist (nickname VARCHAR(16) PRIMARY KEY);"
+                "CREATE TABLE IF NOT EXISTS whitelist " +
+                    "(nickname VARCHAR(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin PRIMARY KEY);"
             ).use { ps ->
                 ps.execute()
             }

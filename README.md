@@ -4,7 +4,7 @@ This is a Fabric mod for Minecraft 1.21 that provides a simple whitelist system 
 
 ## Features
 
-- **Whitelist based on usernames:** The whitelist system is based on usernames, not UUIDs. Names are matched case-insensitively.
+- **Whitelist based on usernames:** The whitelist system is based on usernames, not UUIDs. Names are case-sensitive — `Steve` and `steve` are treated as different players.
 - **Database storage:** You can choose between storing the whitelist data in a JSON file or a MySQL database.
 
 ## Dependencies
