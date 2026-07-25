@@ -50,8 +50,9 @@ public class WhitelistGameTest {
         // negative control: the name is absent before we add it
         if (db.inWhitelist(name)) throw new RuntimeException("precondition: name should be absent");
         if (!db.addPlayer(name)) throw new RuntimeException("addPlayer returned false");
-        // case-insensitive lookup (the fix this mod ships)
-        if (!db.inWhitelist("gametestuser")) throw new RuntimeException("case-insensitive lookup failed");
+        // case-sensitive: the exact case is present, a different case is not
+        if (!db.inWhitelist(name)) throw new RuntimeException("exact-case lookup failed");
+        if (db.inWhitelist("gametestuser")) throw new RuntimeException("case-sensitivity failed: lowercase matched");
         // negative control: an unrelated name is still absent
         if (db.inWhitelist("SomeoneElse")) throw new RuntimeException("control: unrelated name present");
         if (!db.removePlayer(name)) throw new RuntimeException("removePlayer returned false");
