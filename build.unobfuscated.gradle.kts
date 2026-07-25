@@ -30,6 +30,13 @@ val compileJava = 21
 
 val mcVersion = stonecutter.current.version
 val u = when (mcVersion) {
+    "26.1.2" -> Unobf(
+        fapi = "0.155.2+26.1.2",
+        flk = "1.13.13+kotlin.2.4.10",
+        runtimeJava = 25,
+        depends = ">=26.1 <26.2",
+        gameVersions = listOf("26.1", "26.1.1", "26.1.2"),
+    )
     "26.2" -> Unobf(
         fapi = "0.155.2+26.2",
         flk = "1.13.13+kotlin.2.4.10",

@@ -38,8 +38,8 @@ val mc = when (mcVersion) {
         fapi = "0.77.0+1.18.2",
         permissions = "0.3.1",
         java = 17,
-        depends = ">=1.18.2 <1.19",
-        gameVersions = listOf("1.18.2"),
+        depends = ">=1.18 <1.19",
+        gameVersions = listOf("1.18", "1.18.1", "1.18.2"),
     )
     "1.19.4" -> Mc(
         yarn = "1.19.4+build.2",

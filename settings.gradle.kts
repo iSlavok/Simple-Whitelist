@@ -22,6 +22,7 @@ stonecutter {
         // toolchain, so it lives in its own build script and is only registered
         // when the running JDK can build it (keeps the project buildable on 17/21).
         if (JavaVersion.current().majorVersion.toInt() >= 25) {
+            version("26.1.2", "26.1.2").buildscript = "build.unobfuscated.gradle.kts"
             version("26.2", "26.2").buildscript = "build.unobfuscated.gradle.kts"
         }
         vcsVersion = "1.21.10"
