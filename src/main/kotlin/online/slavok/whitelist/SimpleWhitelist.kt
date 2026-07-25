@@ -1,7 +1,11 @@
 package online.slavok.whitelist
 
 import net.fabricmc.api.ModInitializer
+//? if >=1.19 {
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
+//?} else {
+/*import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback*/
+//?}
 import net.fabricmc.loader.api.FabricLoader
 import online.slavok.whitelist.commands.SimpleWhitelistCommand
 import online.slavok.whitelist.config.ConfigManager
@@ -35,8 +39,16 @@ object SimpleWhitelist : ModInitializer {
 			logger.info("Using JSON database")
 		}
 
+		// Command API v2 (1.19+) passes (dispatcher, registryAccess, environment);
+		// v1 (1.18 and earlier) passes (dispatcher, dedicated).
+		//? if >=1.19 {
 		CommandRegistrationCallback.EVENT.register { dispatcher, _, _ ->
 			SimpleWhitelistCommand().register(dispatcher)
 		}
+		//?} else {
+		/*CommandRegistrationCallback.EVENT.register { dispatcher, _ ->
+			SimpleWhitelistCommand().register(dispatcher)
+		}*/
+		//?}
 	}
 }

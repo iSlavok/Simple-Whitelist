@@ -8,6 +8,7 @@ import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import online.slavok.whitelist.SimpleWhitelist
+import online.slavok.whitelist.literalText
 import online.slavok.whitelist.commands.api.Permission
 import online.slavok.whitelist.commands.suggestionProviders.PlayerSuggestionProvider
 import online.slavok.whitelist.commands.suggestionProviders.WhitelistPlayerSuggestionProvider
@@ -36,13 +37,13 @@ class SimpleWhitelistCommand {
                             val playerName = context.getArgument("nickname", String::class.java)
                             if (SimpleWhitelist.databaseManager.addPlayer(playerName)) {
                                 context.source.feedback(
-                                    Text.literal("$playerName added to whitelist").formatted(Formatting.GREEN),
+                                    literalText("$playerName added to whitelist").formatted(Formatting.GREEN),
                                     true
                                 )
                                 1
                             } else {
                                 context.source.feedback(
-                                    Text.literal("$playerName is already on the whitelist").formatted(Formatting.DARK_RED),
+                                    literalText("$playerName is already on the whitelist").formatted(Formatting.DARK_RED),
                                     true
                                 )
                                 0
@@ -57,13 +58,13 @@ class SimpleWhitelistCommand {
                             val playerName = context.getArgument("nickname", String::class.java)
                             if (SimpleWhitelist.databaseManager.removePlayer(playerName)) {
                                 context.source.feedback(
-                                    Text.literal("$playerName removed from the whitelist").formatted(Formatting.RED),
+                                    literalText("$playerName removed from the whitelist").formatted(Formatting.RED),
                                     true
                                 )
                                 1
                             } else {
                                 context.source.feedback(
-                                    Text.literal("$playerName not found on the whitelist").formatted(Formatting.DARK_RED),
+                                    literalText("$playerName not found on the whitelist").formatted(Formatting.DARK_RED),
                                     true
                                 )
                                 0
@@ -75,7 +76,7 @@ class SimpleWhitelistCommand {
                         .executes { context ->
                             val players = SimpleWhitelist.databaseManager.getAll()
                             context.source.feedback(
-                                Text.literal("Players on the whitelist: ${players.joinToString(", ")}").formatted(Formatting.GOLD),
+                                literalText("Players on the whitelist: ${players.joinToString(", ")}").formatted(Formatting.GOLD),
                                 false
                             )
                             1
@@ -85,7 +86,7 @@ class SimpleWhitelistCommand {
                         .executes { context ->
                             SimpleWhitelist.configManager.setWhitelist(true)
                             context.source.feedback(
-                                Text.literal("Whitelist is enabled").formatted(Formatting.GREEN),
+                                literalText("Whitelist is enabled").formatted(Formatting.GREEN),
                                 true
                             )
                             1
@@ -95,7 +96,7 @@ class SimpleWhitelistCommand {
                         .executes { context ->
                             SimpleWhitelist.configManager.setWhitelist(false)
                             context.source.feedback(
-                                Text.literal("Whitelist is disabled").formatted(Formatting.RED),
+                                literalText("Whitelist is disabled").formatted(Formatting.RED),
                                 true
                             )
                             1

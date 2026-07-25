@@ -17,7 +17,7 @@ stonecutter {
     create(rootProject) {
         // Each anchor's jar covers a whole patch band via the version range in
         // fabric.mod.json. More anchors are added in later PRs.
-        versions("1.19.4", "1.20.1", "1.20.6", "1.21.10")
+        versions("1.18.2", "1.19.4", "1.20.1", "1.20.6", "1.21.10")
         vcsVersion = "1.21.10"
     }
 }
