@@ -29,13 +29,14 @@ class SimpleWhitelistCommand {
                                     { Text.literal("$playerName added to whitelist").formatted(Formatting.GREEN) },
                                     true
                                 )
+                                1
                             } else {
                                 context.source.sendFeedback(
                                     { Text.literal("$playerName is already on the whitelist").formatted(Formatting.DARK_RED) },
                                     true
                                 )
+                                0
                             }
-                            0
                         }
                     )
                 ).then(
@@ -49,13 +50,14 @@ class SimpleWhitelistCommand {
                                     { Text.literal("$playerName removed from the whitelist").formatted(Formatting.RED) },
                                     true
                                 )
+                                1
                             } else {
                                 context.source.sendFeedback(
                                     { Text.literal("$playerName not found on the whitelist").formatted(Formatting.DARK_RED) },
                                     true
                                 )
+                                0
                             }
-                            0
                         }
                     )
                 ).then(
@@ -66,7 +68,7 @@ class SimpleWhitelistCommand {
                                 { Text.literal("Players on the whitelist: ${players.joinToString(", ")}").formatted(Formatting.GOLD) },
                                 false
                             )
-                            0
+                            1
                         }
                 ).then(
                     literal("on")
@@ -76,7 +78,7 @@ class SimpleWhitelistCommand {
                                 { Text.literal("Whitelist is enabled").formatted(Formatting.GREEN) },
                                 true
                             )
-                            0
+                            1
                         }
                 ).then(
                     literal("off")
@@ -86,7 +88,7 @@ class SimpleWhitelistCommand {
                                 { Text.literal("Whitelist is disabled").formatted(Formatting.RED) },
                                 true
                             )
-                            0
+                            1
                         }
                 )
         )
