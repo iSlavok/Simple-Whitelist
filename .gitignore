@@ -32,6 +32,12 @@ bin/
 
 run/
 
+# stonecutter (generated per-version node dirs; build/ and .gradle/ already ignored above)
+
+versions/*/logs/
+versions/*/run/
+.stonecutter/
+
 # java
 
 hs_err_*.log

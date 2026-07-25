@@ -2,10 +2,12 @@ package online.slavok.whitelist.database
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import online.slavok.whitelist.SimpleWhitelist
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
+
+private val logger = LoggerFactory.getLogger("simple-whitelist")
 
 /**
  * JSON-file backed whitelist.
@@ -27,7 +29,7 @@ class JsonManager(
                     Json.decodeFromString<List<String>>(file.readText())
                         .mapTo(LinkedHashSet()) { normalize(it) }
                 } catch (e: Exception) {
-                    SimpleWhitelist.logger.warn("Error loading whitelist file, starting empty: ${e.message}")
+                    logger.warn("Error loading whitelist file, starting empty: ${e.message}")
                     LinkedHashSet()
                 }
             } else {

@@ -1,0 +1,4 @@
+[22:00:46] [Test worker/WARN]: Error loading config: Unexpected JSON token at offset 0: Expected start of the object '{', but had '}' instead at path: $
+JSON input: }{ not json
+[22:00:46] [Test worker/WARN]: Error loading whitelist file, starting empty: Unexpected JSON token at offset 0: Expected start of the array '[', but had '}' instead at path: $
+JSON input: }{ not json

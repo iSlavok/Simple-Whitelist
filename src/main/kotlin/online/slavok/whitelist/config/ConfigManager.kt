@@ -2,10 +2,12 @@ package online.slavok.whitelist.config
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import online.slavok.whitelist.SimpleWhitelist
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
+
+private val logger = LoggerFactory.getLogger("simple-whitelist")
 
 
 class ConfigManager(
@@ -27,7 +29,7 @@ class ConfigManager(
             try {
                 config = json.decodeFromString(configFile.readText())
             } catch (e: Exception) {
-                SimpleWhitelist.logger.warn("Error loading config: ${e.message}")
+                logger.warn("Error loading config: ${e.message}")
             }
         }
         saveConfig()
