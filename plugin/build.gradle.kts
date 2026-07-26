@@ -20,6 +20,10 @@ dependencies {
     // runs on Spigot/Paper/Purpur.
     compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
 
+    // SLF4J is provided by the server at runtime (Paper/Spigot ship slf4j-api;
+    // JavaPlugin.getSLF4JLogger exists on api-version 1.20+), so never bundle it.
+    compileOnly("org.slf4j:slf4j-api:2.0.9")
+
     // Shaded runtime libs (relocated in the shadowJar config below).
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
     implementation("com.zaxxer:HikariCP:5.1.0")
@@ -27,6 +31,8 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.slf4j:slf4j-api:2.0.9")
+    testRuntimeOnly("org.slf4j:slf4j-simple:2.0.9")
     testImplementation("org.mockito:mockito-core:5.11.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
     // MockBukkit + paper-api (versions aligned in Task 3).
