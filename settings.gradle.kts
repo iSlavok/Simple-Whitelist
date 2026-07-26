@@ -30,3 +30,7 @@ stonecutter {
 }
 
 rootProject.name = "simple-whitelist"
+
+// IDE visibility only — lists the standalone plugin build's tasks (e.g. runServer)
+// without pulling it into the root build. CI builds it with `./gradlew -p plugin build`.
+includeBuild("plugin")
