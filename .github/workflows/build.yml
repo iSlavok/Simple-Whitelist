@@ -47,3 +47,22 @@ jobs:
           name: jars-unobfuscated
           path: versions/26.*/build/libs/*.jar
           if-no-files-found: error
+
+  # Standalone Bukkit plugin build (own settings.gradle.kts, toolchain 21) — kept out
+  # of the mod's Stonecutter/Loom grid, built via `-p plugin`.
+  build-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v4
+      - name: build plugin (shaded jar + unit/MockBukkit tests)
+        run: ./gradlew -p plugin build --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plugin-jar
+          path: plugin/build/libs/*.jar
+          if-no-files-found: error

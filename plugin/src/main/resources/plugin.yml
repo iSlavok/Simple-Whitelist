@@ -1,0 +1,17 @@
+name: SimpleWhitelist
+version: '${version}'
+main: online.slavok.whitelist.SimpleWhitelistPlugin
+api-version: '1.20'
+folia-supported: true
+author: iSlavok
+description: Simple username-based whitelist (JSON or MySQL), case-sensitive.
+commands:
+  simplewhitelist:
+    description: Manage the whitelist.
+    usage: /simplewhitelist <add|remove|list|on|off>
+    aliases: [swl, swh, swhitelist]
+    permission: simplewhitelist.command
+permissions:
+  simplewhitelist.command:
+    description: Access to the whitelist commands.
+    default: op

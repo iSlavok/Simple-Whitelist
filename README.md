@@ -8,6 +8,24 @@ This is a Fabric mod for Minecraft 1.21 that provides a simple whitelist system 
 - **Database storage:** You can choose between storing the whitelist data in a JSON file or a MySQL database.
 - **ModMenu screen (client, 1.21+):** With [ModMenu](https://modrinth.com/mod/modmenu) installed, a minimal config screen lets you toggle the whitelist — handy when you open a singleplayer world to LAN.
 
+## Server plugin (Bukkit/Spigot/Paper/Purpur/Folia)
+
+The same whitelist is also available as a **server plugin** — one jar for Spigot, Paper,
+Purpur and Folia (Folia-supported). It reuses the mod's JSON/MySQL storage and the same
+case-sensitive, username-based rules, and needs no client mod.
+
+- **Config:** `plugins/SimpleWhitelist/config.json` — same schema as the mod (see below).
+- **Commands:** `/simplewhitelist add|remove|list|on|off` with aliases `swl`, `swh`,
+  `swhitelist`; permission `simplewhitelist.command` (default: op — grant it via any
+  permissions plugin, e.g. LuckPerms).
+- **Build locally:** `./gradlew -p plugin build` → `plugin/build/libs/*.jar`.
+- **Try it on a real server:** `./gradlew -p plugin runServer` (override the version with
+  `-Prun_mc=1.21.8`).
+
+The plugin lives in a standalone Gradle build under `plugin/` and publishes to the same
+Modrinth project as the mod. Client-only features (the ModMenu config screen) are mod-only
+and have no plugin equivalent.
+
 ## Dependencies
 
 Required:

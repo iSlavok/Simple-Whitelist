@@ -12,10 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # Highest JDK needed so the 26+ nodes are included in the build.
+      # JDK 25 for the 26+ mod nodes; JDK 21 for the standalone plugin's toolchain.
+      # Gradle toolchain auto-detection finds both installed JDKs.
       - uses: actions/setup-java@v4
         with:
-          java-version: 25
+          java-version: |
+            25
+            21
           distribution: temurin
       - uses: gradle/actions/setup-gradle@v4
       # The tag (minus the leading v) is the release version; -P overrides the
@@ -25,17 +28,24 @@ jobs:
         run: |
           if [ "$GITHUB_REF_TYPE" = "tag" ]; then
             echo "arg=-Pmod_version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+            echo "plugin_arg=-Pplugin_version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
           else
             echo "arg=" >> "$GITHUB_OUTPUT"
+            echo "plugin_arg=" >> "$GITHUB_OUTPUT"
           fi
       - name: assemble all versions (jars, no gametest boot)
         run: ./gradlew assemble ${{ steps.ver.outputs.arg }} --stacktrace
 
-      # softprops has no exclude patterns → stage only the loadable jars.
+      - name: Build plugin jar
+        run: ./gradlew -p plugin clean build ${{ steps.ver.outputs.plugin_arg }} --stacktrace
+
+      # softprops has no exclude patterns → stage only the loadable jars (mod nodes +
+      # the standalone plugin).
       - name: Collect release jars
         run: |
           mkdir -p release-jars
           find versions -path '*/build/libs/*.jar' ! -name '*-sources.jar' -exec cp {} release-jars/ \;
+          cp plugin/build/libs/*.jar release-jars/
           ls -la release-jars
       - name: Attach jars to the GitHub Release
         uses: softprops/action-gh-release@v2
@@ -44,7 +54,12 @@ jobs:
           fail_on_unmatched_files: true
           generate_release_notes: true
 
-      - name: Publish to Modrinth
+      - name: Publish mod to Modrinth
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
         run: ./gradlew publishMods ${{ steps.ver.outputs.arg }} --stacktrace
+
+      - name: Publish plugin to Modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        run: ./gradlew -p plugin publishMods ${{ steps.ver.outputs.plugin_arg }} --stacktrace
