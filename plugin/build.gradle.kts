@@ -3,6 +3,7 @@ plugins {
     kotlin("plugin.serialization") version "2.4.10"
     id("com.gradleup.shadow") version "9.6.1"
     id("xyz.jpenilla.run-paper") version "3.0.2"
+    id("me.modmuss50.mod-publish-plugin") version "0.8.4"
 }
 
 group = "online.slavok"
@@ -72,3 +73,26 @@ tasks.shadowJar {
 // (both would be simple-whitelist-plugin-<version>.jar).
 tasks.jar { enabled = false }
 tasks.assemble { dependsOn(tasks.shadowJar) }
+
+// Publish the plugin jar to the SAME Modrinth project as the mod, under plugin loaders.
+// The version string carries a `+plugin` suffix so it never collides with the mod nodes'
+// `<version>+mcX.Y.Z` (Modrinth version numbers must be unique per project).
+publishMods {
+    file.set(tasks.shadowJar.flatMap { it.archiveFile })
+    version.set("${project.version}+plugin")
+    displayName.set("Simple Whitelist (plugin) ${project.version}")
+    type.set(me.modmuss50.mpp.ReleaseType.STABLE)
+    modLoaders.addAll("bukkit", "spigot", "paper", "purpur", "folia")
+    changelog.set("See https://github.com/iSlavok/Simple-Whitelist/releases")
+    modrinth {
+        projectId.set(providers.gradleProperty("modrinth_id"))
+        accessToken.set(providers.environmentVariable("MODRINTH_TOKEN"))
+        // Stable Bukkit API — one jar spans the range; mod-publish resolves the concrete
+        // version list from Modrinth at publish time. Start at 1.20 (our plugin.yml
+        // api-version); widen `end` once the plugin is verified on newer servers.
+        minecraftVersionRange {
+            start = "1.20"
+            end = "1.21.11"
+        }
+    }
+}
