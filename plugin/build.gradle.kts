@@ -29,13 +29,18 @@ dependencies {
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("com.mysql:mysql-connector-j:9.0.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    // JUnit 6 BOM — MockBukkit-v1.21 is built against JUnit 6, so the whole suite
+    // rides on it (the BOM keeps jupiter + platform-launcher versions aligned).
+    testImplementation(platform("org.junit:junit-bom:6.0.3"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.slf4j:slf4j-api:2.0.9")
     testRuntimeOnly("org.slf4j:slf4j-simple:2.0.9")
     testImplementation("org.mockito:mockito-core:5.11.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
-    // MockBukkit + paper-api (versions aligned in Task 3).
+    // MockBukkit target patch and paper-api must match (else IncompatiblePaperVersionException).
+    testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.110.0")
+    testImplementation("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 }
 
 kotlin {
