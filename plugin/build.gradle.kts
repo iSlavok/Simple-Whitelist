@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "2.4.10"
     kotlin("plugin.serialization") version "2.4.10"
-    id("com.gradleup.shadow") version "8.3.5"
+    id("com.gradleup.shadow") version "9.6.1"
     id("xyz.jpenilla.run-paper") version "3.0.2"
 }
 
@@ -56,3 +56,19 @@ tasks.processResources {
     inputs.properties(props)
     filesMatching("plugin.yml") { expand(props) }
 }
+
+tasks.shadowJar {
+    archiveClassifier.set("")
+    // Relocate HikariCP — the library most likely to clash with other DB plugins.
+    // mysql-connector is left un-relocated (its META-INF/services JDBC driver entry
+    // is preserved by mergeServiceFiles and Hikari resolves it via the jdbcUrl).
+    // kotlin-stdlib is bundled but not relocated — Paper isolates each plugin in its
+    // own classloader.
+    relocate("com.zaxxer.hikari", "online.slavok.whitelist.libs.hikari")
+    mergeServiceFiles() // keep META-INF/services/java.sql.Driver so MySQL loads
+}
+
+// shadowJar is the published artifact; disable the thin jar to avoid a name clash
+// (both would be simple-whitelist-plugin-<version>.jar).
+tasks.jar { enabled = false }
+tasks.assemble { dependsOn(tasks.shadowJar) }
