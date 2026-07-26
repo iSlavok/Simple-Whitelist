@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm") version "2.4.10"
     kotlin("plugin.serialization") version "2.4.10"
@@ -45,7 +48,19 @@ dependencies {
 }
 
 kotlin {
+    // Everything compiles on JDK 21 (the JDK CI provisions). Only the MAIN jar targets
+    // Java 17 bytecode (loads on 1.18+ servers; newer servers on Java 21/25 run it fine).
+    // The test classpath stays at 21 on purpose — paper-api/MockBukkit ship Gradle module
+    // metadata requiring a 21-compatible consumer, so lowering tests to 17 makes their
+    // variant selection fail. Tests aren't shipped, so their bytecode level is irrelevant.
     jvmToolchain(21)
+}
+
+tasks.named<KotlinCompile>("compileKotlin") {
+    compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
+}
+tasks.named<JavaCompile>("compileJava") {
+    options.release.set(17)
 }
 
 tasks.test {
@@ -102,8 +117,8 @@ publishMods {
         // version list from Modrinth at publish time. Start at 1.20 (our plugin.yml
         // api-version); widen `end` once the plugin is verified on newer servers.
         minecraftVersionRange {
-            start = "1.20"
-            end = "1.21.11"
+            start = "1.18"
+            end = "26.2"
         }
     }
 }

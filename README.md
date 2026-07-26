@@ -18,6 +18,8 @@ case-sensitive, username-based rules, and needs no client mod.
 - **Commands:** `/simplewhitelist add|remove|list|on|off` with aliases `swl`, `swh`,
   `swhitelist`; permission `simplewhitelist.command` (default: op — grant it via any
   permissions plugin, e.g. LuckPerms).
+- **Supported versions:** Minecraft **1.18 → 26.2** (Java 17+ servers) — one jar, thanks
+  to the stable Bukkit API.
 - **Build locally:** `./gradlew -p plugin build` → `plugin/build/libs/*.jar`.
 - **Try it on a real server:** `./gradlew -p plugin runServer` (override the version with
   `-Prun_mc=1.21.8`).
