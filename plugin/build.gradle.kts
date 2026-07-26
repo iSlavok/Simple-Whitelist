@@ -74,6 +74,17 @@ tasks.shadowJar {
 tasks.jar { enabled = false }
 tasks.assemble { dependsOn(tasks.shadowJar) }
 
+// `./gradlew -p plugin runServer` boots a real Paper server with the shaded jar
+// (run-paper auto-uses the shadowJar output). Override MC with -Prun_mc=1.21.8.
+tasks.runServer {
+    val mc = providers.gradleProperty("run_mc").getOrElse("1.21.4")
+    minecraftVersion(mc)
+    // Paper for MC 26+ needs Java 25; older versions run on 21.
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(if (mc.substringBefore(".").toInt() >= 26) 25 else 21))
+    })
+}
+
 // Publish the plugin jar to the SAME Modrinth project as the mod, under plugin loaders.
 // The version string carries a `+plugin` suffix so it never collides with the mod nodes'
 // `<version>+mcX.Y.Z` (Modrinth version numbers must be unique per project).
